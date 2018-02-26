@@ -24,3 +24,7 @@ The template already contains the configuration for Visual Studio Code. If Flow 
 ## Atom Setup
 
 The template already works out of the box with Atom. I'd also recommend to install the `nuclide` package for Flow support as well as `prettier-atom` for automatic formatting.
+
+## WebStorm
+
+WebStorm can also be used to develop React applications. See [this blog post](https://blog.jetbrains.com/webstorm/2016/11/using-flow-in-webstorm/) for setup instructions.
