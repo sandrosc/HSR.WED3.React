@@ -16,3 +16,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
+
+## Visual Studio Code Setup
+
+The template already contains the configuration for Visual Studio Code. If Flow is used, the corresponding extension `flowtype.flow-for-vscode` needs to be installed. I'd also recommend to install the ESLint plug-in `dbaeumer.vscode-eslint` as well as Prettier `esbenp.prettier-vscode` for automatic formatting.
+
+## Atom Setup
+
+The template already works out of the box with Atom. I'd also recommend to install the `nuclide` package for Flow support as well as `prettier-atom` for automatic formatting.
