@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 
-class Dashboard extends Component {
+import { getTransactions } from '../api';
+
+export type Props = {
+  token: String
+};
+
+class Dashboard extends Component<Props, {}> {
+  componentDidMount() {
+    const { token } = this.props;
+    getTransactions(token).then(
+      value => console.log(value),
+      error => console.log(error)
+    );
+  }
+
   render() {
-    const error = false;
+    const newTransactionError = false;
 
     return (
       <div>
         <h1>Dashboard</h1>
-        <form>
-          <label>
+        <div className="dashboardContents">
+          <form className="newTransaction">
+            {/* <label>
             Username
             <input
               onChange={this.handleLoginChanged}
@@ -23,13 +38,15 @@ class Dashboard extends Component {
               placeholder="Password"
               type="password"
               value={this.state.password}
-            />
-          </label>
-          <div>
-            <button onClick={this.handleSubmit}>Log-in</button>
-          </div>
-        </form>
-        {error && <p>Es ist ein Fehler aufgetreten!</p>}
+            /> 
+          </label>*/}
+            <div>
+              <button onClick={this.handleSubmit}>Log-in</button>
+            </div>
+            {newTransactionError && <p>Es ist ein Fehler aufgetreten!</p>}
+          </form>
+        </div>
+        <div />
       </div>
     );
   }

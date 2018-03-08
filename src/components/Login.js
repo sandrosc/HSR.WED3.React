@@ -3,6 +3,8 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 
+import FormElement from './FormElement';
+
 export type Props = {
   /* Callback to submit an authentication request to the server */
   authenticate: (
@@ -27,16 +29,8 @@ class Login extends React.Component<Props, *> {
     redirectToReferrer: false
   };
 
-  handleLoginChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ login: event.target.value });
-    }
-  };
-
-  handlePasswordChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ password: event.target.value });
-    }
+  handleInputChanged = (field, value) => {
+    this.setState(state => ({ ...state, [field]: value }));
   };
 
   handleSubmit = (event: Event) => {
@@ -65,23 +59,19 @@ class Login extends React.Component<Props, *> {
       <div>
         <h1>Login</h1>
         <form>
-          <label>
-            Username
-            <input
-              onChange={this.handleLoginChanged}
-              placeholder="Login"
-              value={this.state.login}
-            />
-          </label>
-          <label>
-            Passwort
-            <input
-              onChange={this.handlePasswordChanged}
-              placeholder="Password"
-              type="password"
-              value={this.state.password}
-            />
-          </label>
+          <FormElement
+            label="Username"
+            field="login"
+            value={this.state.login}
+            onChange={this.handleInputChanged}
+          />
+          <FormElement
+            label="Passwort"
+            field="password"
+            value={this.state.password}
+            onChange={this.handleInputChanged}
+            type="password"
+          />
           <div>
             <button onClick={this.handleSubmit}>Log-in</button>
           </div>

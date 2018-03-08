@@ -5,6 +5,8 @@ import { Redirect } from 'react-router-dom';
 
 import { signup } from '../api';
 
+import FormElement from './FormElement';
+
 class Signup extends React.Component<{}, *> {
   state = {
     login: '',
@@ -15,28 +17,8 @@ class Signup extends React.Component<{}, *> {
     redirectToReferrer: false
   };
 
-  handleLoginChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ login: event.target.value });
-    }
-  };
-
-  handleFirstNameChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ firstname: event.target.value });
-    }
-  };
-
-  handleLastNameChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ lastname: event.target.value });
-    }
-  };
-
-  handlePasswordChanged = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ password: event.target.value });
-    }
+  handleInputChanged = (field, value) => {
+    this.setState(state => ({ ...state, [field]: value }));
   };
 
   handleSubmit = (event: Event) => {
@@ -61,39 +43,31 @@ class Signup extends React.Component<{}, *> {
       <div>
         <h1>Registrieren</h1>
         <form>
-          <label>
-            Username
-            <input
-              onChange={this.handleLoginChanged}
-              placeholder="Username"
-              value={this.state.login}
-            />
-          </label>
-          <label>
-            Vorname
-            <input
-              onChange={this.handleFirstNameChanged}
-              placeholder="Vorname"
-              value={this.state.firstname}
-            />
-          </label>
-          <label>
-            Nachname
-            <input
-              onChange={this.handleLastNameChanged}
-              placeholder="Nachname"
-              value={this.state.lastname}
-            />
-          </label>
-          <label>
-            Passwort
-            <input
-              onChange={this.handlePasswordChanged}
-              placeholder="Passwort"
-              type="password"
-              value={this.state.password}
-            />
-          </label>
+          <FormElement
+            label="Username"
+            field="login"
+            value={this.state.login}
+            onChange={this.handleInputChanged}
+          />
+          <FormElement
+            label="Vorname"
+            field="firstname"
+            value={this.state.firstname}
+            onChange={this.handleInputChanged}
+          />
+          <FormElement
+            label="Nachname"
+            field="lastname"
+            value={this.state.lastname}
+            onChange={this.handleInputChanged}
+          />
+          <FormElement
+            label="Passwort"
+            field="password"
+            value={this.state.password}
+            onChange={this.handleInputChanged}
+            type="password"
+          />
           <div>
             <button onClick={this.handleSubmit}>Account eröffnen</button>
           </div>

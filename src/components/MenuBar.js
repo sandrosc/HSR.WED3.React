@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 const MenuBar = withRouter(
-  ({ history, location: { pathname }, isAuthenticated, user }) => {
+  ({ history, location: { pathname }, isAuthenticated, user, signout }) => {
     if (isAuthenticated && user) {
       return (
         <header>
@@ -22,7 +22,7 @@ const MenuBar = withRouter(
               href="/logout"
               onClick={event => {
                 event.preventDefault();
-                this.signout(() => history.push('/'));
+                signout(() => history.push('/'));
               }}
             >
               Logout {user.firstname} {user.lastname}

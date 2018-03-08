@@ -79,7 +79,11 @@ class App extends Component<Props, State> {
     return (
       <Router>
         <div>
-          <MenuBar isAuthenticated={isAuthenticated} user={user} />
+          <MenuBar
+            isAuthenticated={isAuthenticated}
+            user={user}
+            signout={this.signout}
+          />
           <main>
             <Route
               exact
