@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
-import { Redirect, Link } from "react-router-dom";
+import React from 'react';
+import { Redirect, Link } from 'react-router-dom';
 
 export type Props = {
   /* Callback to submit an authentication request to the server */
@@ -21,8 +21,8 @@ export type Props = {
 
 class Login extends React.Component<Props, *> {
   state = {
-    login: "",
-    password: "",
+    login: '',
+    password: '',
     error: undefined,
     redirectToReferrer: false
   };
@@ -53,7 +53,7 @@ class Login extends React.Component<Props, *> {
 
   render() {
     const { from } = this.props.location.state || {
-      from: { pathname: "/dashboard" }
+      from: { pathname: '/dashboard' }
     };
     const { redirectToReferrer, error } = this.state;
 

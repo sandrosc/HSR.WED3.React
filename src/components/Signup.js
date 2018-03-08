@@ -1,16 +1,16 @@
 // @flow
 
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { signup } from "../api";
+import { signup } from '../api';
 
 class Signup extends React.Component<{}, *> {
   state = {
-    login: "",
-    firstname: "",
-    lastname: "",
-    password: "",
+    login: '',
+    firstname: '',
+    lastname: '',
+    password: '',
     error: null,
     redirectToReferrer: false
   };
@@ -44,7 +44,7 @@ class Signup extends React.Component<{}, *> {
     const { login, firstname, lastname, password } = this.state;
     signup(login, firstname, lastname, password)
       .then(result => {
-        console.log("Signup result ", result);
+        console.log('Signup result ', result);
         this.setState({ redirectToReferrer: true, error: null });
       })
       .catch(error => this.setState({ error }));

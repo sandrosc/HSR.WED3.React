@@ -1,22 +1,22 @@
 // @flow
 
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Link,
   withRouter
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import Home from './components/Home';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from './components/PrivateRoute';
 
-import * as api from "./api";
+import * as api from './api';
 
-import type { User } from "./api";
+import type { User } from './api';
 
 // TODO: Move to own files
 const AllTransactions = () => <div />;
@@ -31,8 +31,8 @@ type State = {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    const token = sessionStorage.getItem("token");
-    const user = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem('token');
+    const user = sessionStorage.getItem('user');
     if (token && user) {
       this.state = {
         isAuthenticated: true,
@@ -57,8 +57,8 @@ class App extends React.Component<{}, State> {
       .login(login, password)
       .then(({ token, owner }) => {
         this.setState({ isAuthenticated: true, token, user: owner });
-        sessionStorage.setItem("token", token);
-        sessionStorage.setItem("user", JSON.stringify(owner));
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('user', JSON.stringify(owner));
         cb(null);
       })
       .catch(error => cb(error));
@@ -70,8 +70,8 @@ class App extends React.Component<{}, State> {
       token: undefined,
       user: undefined
     });
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     callback();
   };
 
@@ -93,7 +93,7 @@ class App extends React.Component<{}, State> {
               href="/logout"
               onClick={event => {
                 event.preventDefault();
-                this.signout(() => history.push("/"));
+                this.signout(() => history.push('/'));
               }}
             >
               Logout {user.firstname} {user.lastname}
