@@ -63,21 +63,28 @@ class Login extends React.Component<Props, *> {
 
     return (
       <div>
-        <h1>Bank of Rapperswil</h1>
+        <h1>Login</h1>
         <form>
-          <h2>Login</h2>
-          <input
-            onChange={this.handleLoginChanged}
-            placeholder="Login"
-            value={this.state.login}
-          />
-          <input
-            onChange={this.handlePasswordChanged}
-            placeholder="Password"
-            type="password"
-            value={this.state.password}
-          />
-          <button onClick={this.handleSubmit}>Log-in</button>
+          <label>
+            Username
+            <input
+              onChange={this.handleLoginChanged}
+              placeholder="Login"
+              value={this.state.login}
+            />
+          </label>
+          <label>
+            Passwort
+            <input
+              onChange={this.handlePasswordChanged}
+              placeholder="Password"
+              type="password"
+              value={this.state.password}
+            />
+          </label>
+          <div>
+            <button onClick={this.handleSubmit}>Log-in</button>
+          </div>
         </form>
         {error && <p>Es ist ein Fehler aufgetreten!</p>}
         <Link to="/signup">Noch keinen Account?</Link>

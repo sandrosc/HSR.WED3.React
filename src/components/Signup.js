@@ -59,31 +59,44 @@ class Signup extends React.Component<{}, *> {
 
     return (
       <div>
-        <h1>Bank of Rapperswil</h1>
+        <h1>Registrieren</h1>
         <form>
-          <h2>Registrieren</h2>
-          <input
-            onChange={this.handleLoginChanged}
-            placeholder="Login"
-            value={this.state.login}
-          />
-          <input
-            onChange={this.handleFirstNameChanged}
-            placeholder="Vorname"
-            value={this.state.firstname}
-          />
-          <input
-            onChange={this.handleLastNameChanged}
-            placeholder="Nachname"
-            value={this.state.lastname}
-          />
-          <input
-            onChange={this.handlePasswordChanged}
-            placeholder="Passwort"
-            type="password"
-            value={this.state.password}
-          />
-          <button onClick={this.handleSubmit}>Account eröffnen</button>
+          <label>
+            Username
+            <input
+              onChange={this.handleLoginChanged}
+              placeholder="Username"
+              value={this.state.login}
+            />
+          </label>
+          <label>
+            Vorname
+            <input
+              onChange={this.handleFirstNameChanged}
+              placeholder="Vorname"
+              value={this.state.firstname}
+            />
+          </label>
+          <label>
+            Nachname
+            <input
+              onChange={this.handleLastNameChanged}
+              placeholder="Nachname"
+              value={this.state.lastname}
+            />
+          </label>
+          <label>
+            Passwort
+            <input
+              onChange={this.handlePasswordChanged}
+              placeholder="Passwort"
+              type="password"
+              value={this.state.password}
+            />
+          </label>
+          <div>
+            <button onClick={this.handleSubmit}>Account eröffnen</button>
+          </div>
         </form>
         {error && <p>Es ist ein Fehler aufgetreten!</p>}
       </div>

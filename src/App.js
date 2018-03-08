@@ -1,26 +1,24 @@
 // @flow
 
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter
-} from 'react-router-dom';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import AllTransactions from './components/AllTransactions';
+import Dashboard from './components/Dashboard';
 
+import MenuBar from './components/MenuBar';
 import PrivateRoute from './components/PrivateRoute';
 
 import * as api from './api';
 
 import type { User } from './api';
 
-// TODO: Move to own files
-const AllTransactions = () => <div />;
-const Dashboard = () => <div />;
+import './app.css';
+
+type Props = {};
 
 type State = {
   isAuthenticated: boolean,
@@ -28,8 +26,8 @@ type State = {
   user: ?User
 };
 
-class App extends React.Component<{}, State> {
-  constructor(props: any) {
+class App extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     const token = sessionStorage.getItem('token');
     const user = sessionStorage.getItem('user');
@@ -78,68 +76,43 @@ class App extends React.Component<{}, State> {
   render() {
     const { isAuthenticated, user, token } = this.state;
 
-    const MenuBar = withRouter(({ history, location: { pathname } }) => {
-      if (isAuthenticated && user) {
-        return (
-          <nav>
-            <span>
-              {user.firstname} {user.lastname} &ndash; {user.accountNr}
-            </span>
-            {/* Links inside the App are created using the react-router's Link component */}
-            <Link to="/">Home</Link>
-            <Link to="/dashboard">Kontoübersicht</Link>
-            <Link to="/transactions">Zahlungen</Link>
-            <a
-              href="/logout"
-              onClick={event => {
-                event.preventDefault();
-                this.signout(() => history.push('/'));
-              }}
-            >
-              Logout {user.firstname} {user.lastname}
-            </a>
-          </nav>
-        );
-      } else {
-        return null;
-      }
-    });
-
     return (
       <Router>
         <div>
-          <MenuBar />
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <Home {...props} isAuthenticated={isAuthenticated} />
-            )}
-          />
-          <Route
-            path="/login"
-            render={props => (
-              <Login {...props} authenticate={this.authenticate} />
-            )}
-          />
-          <Route path="/signup" component={Signup} />
-          {/* 
+          <MenuBar isAuthenticated={isAuthenticated} user={user} />
+          <main>
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <Home {...props} isAuthenticated={isAuthenticated} />
+              )}
+            />
+            <Route
+              path="/login"
+              render={props => (
+                <Login {...props} authenticate={this.authenticate} />
+              )}
+            />
+            <Route path="/signup" component={Signup} />
+            {/* 
             The following are protected routes that are only available for logged-in users. We also pass the user and token so 
             these components can do API calls. PrivateRoute is not part of react-router but our own implementation.
           */}
-          <PrivateRoute
-            path="/dashboard"
-            isAuthenticated={isAuthenticated}
-            token={token}
-            component={Dashboard}
-          />
-          <PrivateRoute
-            path="/transactions"
-            isAuthenticated={isAuthenticated}
-            token={token}
-            user={user}
-            component={AllTransactions}
-          />
+            <PrivateRoute
+              path="/dashboard"
+              isAuthenticated={isAuthenticated}
+              token={token}
+              component={Dashboard}
+            />
+            <PrivateRoute
+              path="/transactions"
+              isAuthenticated={isAuthenticated}
+              token={token}
+              user={user}
+              component={AllTransactions}
+            />
+          </main>
         </div>
       </Router>
     );

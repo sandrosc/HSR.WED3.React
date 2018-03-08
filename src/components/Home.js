@@ -16,12 +16,7 @@ const Home = ({ isAuthenticated }: Props) => (
       </div>
     ) : (
       <div>
-        <Link to={'/login'}>Einloggen</Link>
-        <p>
-          Falls Sie noch keinen Account besitzen können Sie sich hier
-          registrieren:
-        </p>
-        <Link to={'/signup'}>Registrieren</Link>
+        <p>Herzlich willkommen bei der Bank von Rapperswil!</p>
       </div>
     )}
   </div>
