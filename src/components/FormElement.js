@@ -6,23 +6,37 @@ export type Props = {
   label: string,
   field: string,
   value: string,
-  onChange: (field: string, value: string) => void,
-  type?: string
+  onChange?: (field: string, value: string | number) => void,
+  message?: string,
+  type?: string,
+  disabled?: boolean
 };
 
 function FormElement(props: Props) {
-  const { label, field, value, onChange, type } = props;
+  const { label, field, value, onChange, type, message, ...rest } = props;
   return (
     <label>
       {label}
-      <input
-        onChange={(e: SyntheticInputEvent<HTMLInputElement>) => {
-          onChange(field, e.target.value);
-        }}
-        placeholder={label}
-        value={value}
-        type={type || 'text'}
-      />
+      <div>
+        <input
+          onChange={(e: SyntheticInputEvent<HTMLInputElement>) => {
+            if (!onChange) return;
+            if (type === 'number') {
+              const numberValue = parseFloat(e.target.value);
+              const value = Number.isNaN(numberValue) ? 0 : numberValue;
+              onChange(field, value);
+            } else {
+              const value = e.target.value;
+              onChange && onChange(field, value);
+            }
+          }}
+          placeholder={label}
+          value={value}
+          type={type || 'text'}
+          {...rest}
+        />
+        {message}
+      </div>
     </label>
   );
 }

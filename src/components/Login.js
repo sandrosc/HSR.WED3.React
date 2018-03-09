@@ -36,7 +36,7 @@ class Login extends React.Component<Props, State> {
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field: string, value: string) => {
+  handleInputChanged = (field: string, value: string | number) => {
     this.setState((state: State) => ({ ...state, [field]: value }));
   };
 

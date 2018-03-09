@@ -10,9 +10,15 @@ a:focus {
   text-decoration: none;
 }
 
-h1 {
+h1,
+h2 {
   font-weight: lighter;
+}
+h1 {
   font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
 }
 
 body {
@@ -63,7 +69,6 @@ form {
   line-height: 30px;
   clear: both;
 }
-
 form > div,
 form > label {
   display: flex;
@@ -75,16 +80,18 @@ form > label {
 form > div {
   justify-content: flex-end;
 }
-
-form > label > input {
+form > label > div {
   flex: 0 1 250px;
   margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+}
+form > label > div > input {
   padding: 5px;
   height: 30px;
   box-sizing: border-box;
   border: 1px solid var(--red);
 }
-
 form button {
   background: var(--red);
   color: white;
@@ -93,4 +100,17 @@ form button {
   padding: 5px 10px;
   box-sizing: border-box;
   float: right;
+}
+form button:disabled {
+  opacity: 0.5;
+}
+
+.dashboard {
+  display: flex;
+}
+.dashboard h2 {
+  margin-top: 0;
+}
+.dashboard > div {
+  flex: 1 1 auto;
 }

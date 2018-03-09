@@ -26,7 +26,7 @@ class Signup extends React.Component<{}, State> {
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field: string, value: string) => {
+  handleInputChanged = (field: string, value: string | number) => {
     this.setState(state => ({ ...state, [field]: value }));
   };
 
