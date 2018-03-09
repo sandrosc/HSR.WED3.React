@@ -21,7 +21,14 @@ export type Props = {
   }
 };
 
-class Login extends React.Component<Props, *> {
+type State = {
+  login: string,
+  password: string,
+  error?: Error,
+  redirectToReferrer: boolean
+};
+
+class Login extends React.Component<Props, State> {
   state = {
     login: '',
     password: '',
@@ -29,8 +36,8 @@ class Login extends React.Component<Props, *> {
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field, value) => {
-    this.setState(state => ({ ...state, [field]: value }));
+  handleInputChanged = (field: string, value: string) => {
+    this.setState((state: State) => ({ ...state, [field]: value }));
   };
 
   handleSubmit = (event: Event) => {
@@ -40,7 +47,7 @@ class Login extends React.Component<Props, *> {
       if (error) {
         this.setState({ error });
       } else {
-        this.setState({ redirectToReferrer: true, error: null });
+        this.setState({ redirectToReferrer: true, error: undefined });
       }
     });
   };

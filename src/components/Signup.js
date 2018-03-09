@@ -7,17 +7,26 @@ import { signup } from '../api';
 
 import FormElement from './FormElement';
 
-class Signup extends React.Component<{}, *> {
+type State = {
+  login: string,
+  firstname: string,
+  lastname: string,
+  password: string,
+  error?: Error,
+  redirectToReferrer: boolean
+};
+
+class Signup extends React.Component<{}, State> {
   state = {
     login: '',
     firstname: '',
     lastname: '',
     password: '',
-    error: null,
+    error: undefined,
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field, value) => {
+  handleInputChanged = (field: string, value: string) => {
     this.setState(state => ({ ...state, [field]: value }));
   };
 
@@ -27,9 +36,9 @@ class Signup extends React.Component<{}, *> {
     signup(login, firstname, lastname, password)
       .then(result => {
         console.log('Signup result ', result);
-        this.setState({ redirectToReferrer: true, error: null });
+        this.setState({ redirectToReferrer: true, error: undefined });
       })
-      .catch(error => this.setState({ error }));
+      .catch((error: Error) => this.setState({ error }));
   };
 
   render() {

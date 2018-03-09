@@ -3,11 +3,11 @@
 import React from 'react';
 
 export type Props = {
-  label: String,
-  field: String,
-  value: String,
-  onChange: (value: String) => void,
-  type?: String
+  label: string,
+  field: string,
+  value: string,
+  onChange: (field: string, value: string) => void,
+  type?: string
 };
 
 function FormElement(props: Props) {
@@ -16,7 +16,9 @@ function FormElement(props: Props) {
     <label>
       {label}
       <input
-        onChange={(e: Event) => onChange(field, e.target.value)}
+        onChange={(e: SyntheticInputEvent<HTMLInputElement>) => {
+          onChange(field, e.target.value);
+        }}
         placeholder={label}
         value={value}
         type={type || 'text'}
