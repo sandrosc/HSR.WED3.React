@@ -35,7 +35,7 @@ function FormElement(props: Props) {
           type={type || 'text'}
           {...rest}
         />
-        {message}
+        <div className="validationMessage">{message}</div>
       </div>
     </label>
   );

@@ -6,8 +6,19 @@ import {
   getAccountDetails,
   transfer
 } from '../api';
+import type { Transaction } from '../api';
 
 import FormElement from './FormElement';
+import TransactionTable from './TransactionTable';
+
+const transactionStates = {
+  ready: 'ready',
+  running: 'running',
+  unsuccessful: 'unsuccessful',
+  successful: 'successful'
+};
+
+type TransactionState = $Keys<typeof transactionStates>;
 
 export type Props = {
   token: string
@@ -26,8 +37,9 @@ type State = {
     owner: string
   },
   amount: number,
-  transactionRunning: boolean,
-  transactionError: undefined
+  transactionState: TransactionState,
+  transactionError: undefined,
+  transactions: Array<Transaction>
 };
 
 class Dashboard extends Component<Props, State> {
@@ -44,8 +56,9 @@ class Dashboard extends Component<Props, State> {
       owner: ''
     },
     amount: 0,
-    transactionRunning: false,
-    transactionError: undefined
+    transactionState: transactionStates.ready,
+    transactionError: undefined,
+    transactions: []
   };
 
   componentDidMount() {
@@ -65,12 +78,18 @@ class Dashboard extends Component<Props, State> {
       error => console.log(error)
     );
 
-    // get transactions
-    getTransactions(token).then(
-      value => console.log(value),
-      error => console.log(error)
-    );
+    this.updateTransactions();
   }
+
+  updateTransactions = () => {
+    // get transactions
+    getTransactions(this.props.token, undefined, undefined, 10).then(value =>
+      this.setState(state => ({
+        ...state,
+        transactions: value.result
+      }))
+    );
+  };
 
   handleInputChanged = (field: string, value: string | number) => {
     this.setState(state => ({ ...state, [field]: value }));
@@ -104,32 +123,49 @@ class Dashboard extends Component<Props, State> {
     );
   };
 
+  resetForm = () => {
+    this.handleInputChanged('to', '');
+    this.handleInputChanged('amount', 0);
+    this.resetState();
+  };
+
+  resetState = () => {
+    this.setState(state => ({
+      ...state,
+      transactionState: transactionStates.ready
+    }));
+  };
+
   handleSubmit = (event: Event) => {
     event.preventDefault();
     const { toAccount: { accountNr: targetAccountNr }, amount } = this.state;
     const { token } = this.props;
 
-    this.setState(state => ({ ...state, transactionRunning: true }));
+    this.setState(state => ({
+      ...state,
+      transactionState: transactionStates.running
+    }));
 
     setTimeout(() => {
       transfer(targetAccountNr, amount, token).then(
         value => {
-          this.handleInputChanged('to', '');
-          this.handleInputChanged('amount', 0);
+          this.updateTransactions();
           this.setState(state => ({
             ...state,
             fromAccount: {
               ...state.fromAccount,
               amount: value.total
             },
-            transactionRunning: false
+            transactionState: transactionStates.successful
           }));
         },
-        error =>
+        error => {
           this.setState(state => ({
             ...state,
+            transactionState: transactionStates.unsuccessful,
             transactionError: error
-          }))
+          }));
+        }
       );
     }, 1000);
   };
@@ -140,16 +176,30 @@ class Dashboard extends Component<Props, State> {
       to,
       toAccount: { found: toAccountFound, owner: toAccountOwner },
       amount,
-      transactionRunning
+      transactionState,
+      transactions
     } = this.state;
-    const maySubmit = !transactionRunning && toAccountFound;
-    return (
+    const {history} = this.props;
+    const maySubmit =
+      transactionState === transactionStates.ready && toAccountFound;
+      return (
       <div>
         <h1>Dashboard</h1>
         <div className="dashboard">
           <div>
             <h2>Neue Transaktion</h2>
-            <form className="newTransaction">
+            <form className={`newTransaction ${transactionState}`}>
+              <div className="message">
+                {transactionState === transactionStates.successful && (
+                  <div>
+                    <p>Überweisung zu {to} erfolgreich abgeschlossen.</p>
+                    <p>Neuer Kontostand: {fromAccount.amount} CHF</p>
+                    <button onClick={this.resetForm}>Neue Transaktion</button>
+                  </div>
+                )}
+                {transactionState === transactionStates.unsuccessful &&
+                  'Überweisung nicht erfolgreich!'}
+              </div>
               <FormElement
                 label="Von"
                 field="from"
@@ -164,7 +214,9 @@ class Dashboard extends Component<Props, State> {
                 message={
                   to
                     ? toAccountFound
-                      ? toAccountOwner
+                      ? toAccountOwner === fromAccount.owner
+                        ? 'Accountnr. eingeben'
+                        : toAccountOwner
                       : 'Accountnr. nicht gefunden'
                     : 'Accountnr. eingeben'
                 }
@@ -179,7 +231,9 @@ class Dashboard extends Component<Props, State> {
               />
               <div>
                 <button onClick={this.handleSubmit} disabled={!maySubmit}>
-                  {transactionRunning ? 'Überweisung läuft...' : 'Überweisen'}
+                  {transactionState === transactionStates.running
+                    ? 'Überweisung läuft...'
+                    : 'Überweisen'}
                 </button>
               </div>
               {this.state.transactionError && (
@@ -188,7 +242,9 @@ class Dashboard extends Component<Props, State> {
             </form>
           </div>
           <div>
-            <h2>Transaktionen</h2>
+            <h2>Letzte Transaktionen</h2>
+            <TransactionTable transactions={transactions} />
+            <button style={{marginTop: '1rem'}} onClick={() => history.push("/transactions")}>Transaktionen</button>
           </div>
         </div>
       </div>

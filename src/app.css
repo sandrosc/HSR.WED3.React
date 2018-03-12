@@ -1,6 +1,8 @@
 :root {
   --red: #b30f18;
   --yellow: #eed808;
+  --systemFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
 a,
@@ -22,11 +24,21 @@ h2 {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-family: var(--systemFont);
   padding: 0;
   margin: 0;
   overflow-y: scroll;
+}
+
+button {
+  font-family: var(--systemFont);
+  font-size: 1rem;
+  background: var(--red);
+  color: white;
+  border: none;
+  height: 30px;
+  padding: 5px 10px;
+  box-sizing: border-box;
 }
 
 header {
@@ -60,12 +72,11 @@ header .userInfo {
 main {
   padding: 0 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 50px;
 }
 
 form {
   max-width: 400px;
-  width: 100%;
   line-height: 30px;
   clear: both;
 }
@@ -92,25 +103,62 @@ form > label > div > input {
   box-sizing: border-box;
   border: 1px solid var(--red);
 }
+form > label > div > .validationMessage {
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+}
 form button {
-  background: var(--red);
-  color: white;
-  border: none;
-  height: 30px;
-  padding: 5px 10px;
-  box-sizing: border-box;
   float: right;
 }
 form button:disabled {
   opacity: 0.5;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th,
+table td {
+  text-align: start;
+  border: 1px solid var(--red);
+  padding: 0.5rem;
+}
+
 .dashboard {
-  display: flex;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-gap: 2rem;
+}
+@media(max-width: 1100px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
 }
 .dashboard h2 {
   margin-top: 0;
 }
-.dashboard > div {
-  flex: 1 1 auto;
+.newTransaction {
+  position: relative;
+}
+.newTransaction .message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  margin: 0;
+  flex-direction: column;
+  z-index: 100;
+  justify-content: flex-start;
+}
+
+.newTransaction.successful .message,
+.newTransaction.unsuccessful .message {
+  opacity: 1;
+  pointer-events: all;
 }
