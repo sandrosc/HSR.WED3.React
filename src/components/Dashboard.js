@@ -14,7 +14,6 @@ import TransactionTable from './TransactionTable';
 const transactionStates = {
   ready: 'ready',
   running: 'running',
-  unsuccessful: 'unsuccessful',
   successful: 'successful'
 };
 
@@ -156,13 +155,14 @@ class Dashboard extends Component<Props, State> {
               ...state.fromAccount,
               amount: value.total
             },
-            transactionState: transactionStates.successful
+            transactionState: transactionStates.successful,
+            transactionError: undefined
           }));
         },
         error => {
           this.setState(state => ({
             ...state,
-            transactionState: transactionStates.unsuccessful,
+            transactionState: transactionStates.ready,
             transactionError: error
           }));
         }
@@ -179,10 +179,10 @@ class Dashboard extends Component<Props, State> {
       transactionState,
       transactions
     } = this.state;
-    const {history} = this.props;
+    const { history } = this.props;
     const maySubmit =
       transactionState === transactionStates.ready && toAccountFound;
-      return (
+    return (
       <div>
         <h1>Dashboard</h1>
         <div className="dashboard">
@@ -197,8 +197,12 @@ class Dashboard extends Component<Props, State> {
                     <button onClick={this.resetForm}>Neue Transaktion</button>
                   </div>
                 )}
-                {transactionState === transactionStates.unsuccessful &&
-                  'Überweisung nicht erfolgreich!'}
+                {/* {transactionState === transactionStates.unsuccessful && (
+                  <div>
+                    <p>Überweisung nicht erfolgreich!</p>
+                    <button onClick={this.resetForm}>Erneut versuchen</button>
+                  </div>
+                )} */}
               </div>
               <FormElement
                 label="Von"
@@ -224,9 +228,10 @@ class Dashboard extends Component<Props, State> {
               <FormElement
                 label="Menge"
                 field="amount"
-                value={this.state.amount}
+                value={`${amount}`}
                 onChange={this.handleInputChanged}
                 type="number"
+                min="0"
                 message={!amount && 'Menge angeben'}
               />
               <div>
@@ -244,7 +249,12 @@ class Dashboard extends Component<Props, State> {
           <div>
             <h2>Letzte Transaktionen</h2>
             <TransactionTable transactions={transactions} />
-            <button style={{marginTop: '1rem'}} onClick={() => history.push("/transactions")}>Transaktionen</button>
+            <button
+              style={{ marginTop: '1rem' }}
+              onClick={() => history.push('/transactions')}
+            >
+              Transaktionen
+            </button>
           </div>
         </div>
       </div>
