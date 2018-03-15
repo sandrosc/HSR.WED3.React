@@ -36,7 +36,7 @@ class Login extends React.Component<Props, State> {
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field: string, value: string | number) => {
+  handleInputChanged = (field: string) => (value: string | number) => {
     this.setState((state: State) => ({ ...state, [field]: value }));
   };
 
@@ -62,7 +62,11 @@ class Login extends React.Component<Props, State> {
       return <Redirect to={from} />;
     }
 
-    const mayLogin = !(login.length < 3 || password.length < 3);
+    const minLength = 3;
+
+    const mayLogin = [login, password].every(
+      value => value.length >= minLength
+    );
 
     return (
       <div>
@@ -70,18 +74,16 @@ class Login extends React.Component<Props, State> {
         <form>
           <FormElement
             label="Username"
-            field="login"
             value={login}
-            onChange={this.handleInputChanged}
-            message={login.length < 3 && 'Minimumlänge 3'}
+            onChange={this.handleInputChanged('login')}
+            minLength={minLength}
           />
           <FormElement
             label="Passwort"
-            field="password"
             value={password}
-            onChange={this.handleInputChanged}
+            onChange={this.handleInputChanged('password')}
             type="password"
-            message={password.length < 3 && 'Minimumlänge 3'}
+            minLength={minLength}
           />
           <div>
             <button onClick={this.handleSubmit} disabled={!mayLogin}>

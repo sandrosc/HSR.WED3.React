@@ -13,11 +13,8 @@ const MenuBar = withRouter(
             {user.firstname} {user.lastname} &ndash; {user.accountNr}
           </span>
           <nav>
-            {/* Links inside the App are created using the react-router's Link
-          component */}
-            <Link to="/">Home</Link>
-            <Link to="/dashboard">Kontoübersicht</Link>
-            <Link to="/transactions">Zahlungen</Link>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/transactions">Alle Transaktionen</Link>
             <a
               href="/logout"
               onClick={event => {
@@ -25,7 +22,7 @@ const MenuBar = withRouter(
                 signout(() => history.push('/'));
               }}
             >
-              Logout {user.firstname} {user.lastname}
+              Logout
             </a>
           </nav>
         </header>

@@ -44,6 +44,7 @@ button {
 header {
   background: var(--red);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
@@ -67,6 +68,7 @@ header a:hover {
 header .userInfo {
   color: var(--yellow);
   line-height: 50px;
+  padding: 0 20px;
 }
 
 main {

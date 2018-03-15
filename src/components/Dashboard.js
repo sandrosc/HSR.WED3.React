@@ -81,7 +81,6 @@ class Dashboard extends Component<Props, State> {
   }
 
   updateTransactions = () => {
-    // get transactions
     getTransactions(this.props.token, undefined, undefined, 10).then(value =>
       this.setState(state => ({
         ...state,
@@ -90,7 +89,7 @@ class Dashboard extends Component<Props, State> {
     );
   };
 
-  handleInputChanged = (field: string, value: string | number) => {
+  handleInputChanged = (field: string) => (value: string | number) => {
     this.setState(state => ({ ...state, [field]: value }));
     if (field === 'to') {
       this.handleToUpdated(value);
@@ -123,12 +122,12 @@ class Dashboard extends Component<Props, State> {
   };
 
   resetForm = () => {
-    this.handleInputChanged('to', '');
-    this.handleInputChanged('amount', 0);
-    this.resetState();
+    this.handleInputChanged('to')('');
+    this.handleInputChanged('amount')(0);
+    this.resetTransactionState();
   };
 
-  resetState = () => {
+  resetTransactionState = () => {
     this.setState(state => ({
       ...state,
       transactionState: transactionStates.ready
@@ -197,12 +196,6 @@ class Dashboard extends Component<Props, State> {
                     <button onClick={this.resetForm}>Neue Transaktion</button>
                   </div>
                 )}
-                {/* {transactionState === transactionStates.unsuccessful && (
-                  <div>
-                    <p>Überweisung nicht erfolgreich!</p>
-                    <button onClick={this.resetForm}>Erneut versuchen</button>
-                  </div>
-                )} */}
               </div>
               <FormElement
                 label="Von"
@@ -212,9 +205,8 @@ class Dashboard extends Component<Props, State> {
               />
               <FormElement
                 label="Zu"
-                field="to"
                 value={to}
-                onChange={this.handleInputChanged}
+                onChange={this.handleInputChanged('to')}
                 message={
                   to
                     ? toAccountFound
@@ -227,9 +219,8 @@ class Dashboard extends Component<Props, State> {
               />
               <FormElement
                 label="Menge"
-                field="amount"
                 value={`${amount}`}
-                onChange={this.handleInputChanged}
+                onChange={this.handleInputChanged('amount')}
                 type="number"
                 min="0.05"
                 message={!amount && 'Menge angeben'}

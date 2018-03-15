@@ -6,14 +6,24 @@ export type Props = {
   label: string,
   field: string,
   value: string,
-  onChange?: (field: string, value: string | number) => void,
+  onChange?: (value: string | number) => void,
   message?: string,
   type?: string,
-  disabled?: boolean
+  disabled?: boolean,
+  minLength?: number
 };
 
 function FormElement(props: Props) {
-  const { label, field, value, onChange, type, message, ...rest } = props;
+  const {
+    label,
+    field,
+    value,
+    onChange,
+    type,
+    message,
+    minLength,
+    ...rest
+  } = props;
   return (
     <label>
       {label}
@@ -24,10 +34,10 @@ function FormElement(props: Props) {
             if (type === 'number') {
               const numberValue = parseFloat(e.target.value);
               const value = Number.isNaN(numberValue) ? 0 : numberValue;
-              onChange(field, value);
+              onChange(value);
             } else {
               const value = e.target.value;
-              onChange && onChange(field, value);
+              onChange && onChange(value);
             }
           }}
           placeholder={label}
@@ -35,7 +45,11 @@ function FormElement(props: Props) {
           type={type || 'text'}
           {...rest}
         />
-        <div className="validationMessage">{message}</div>
+        <div className="validationMessage">
+          {message && <div>{message}</div>}
+          {minLength &&
+            value.length < minLength && <div>Minimumlänge: {minLength}</div>}
+        </div>
       </div>
     </label>
   );

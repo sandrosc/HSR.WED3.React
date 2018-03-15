@@ -26,7 +26,7 @@ class Signup extends React.Component<{}, State> {
     redirectToReferrer: false
   };
 
-  handleInputChanged = (field: string, value: string | number) => {
+  handleInputChanged = (field: string) => (value: string | number) => {
     this.setState(state => ({ ...state, [field]: value }));
   };
 
@@ -42,43 +42,54 @@ class Signup extends React.Component<{}, State> {
   };
 
   render() {
-    const { redirectToReferrer, error } = this.state;
+    const {
+      redirectToReferrer,
+      error,
+      login,
+      firstname,
+      lastname,
+      password
+    } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to="/login" />;
     }
-
+    const maySignup = [login, firstname, lastname, password].every(
+      value => value.length >= 3
+    );
     return (
       <div>
         <h1>Registrieren</h1>
         <form>
           <FormElement
             label="Username"
-            field="login"
-            value={this.state.login}
-            onChange={this.handleInputChanged}
+            value={login}
+            onChange={this.handleInputChanged('login')}
+            minLength={3}
           />
           <FormElement
             label="Vorname"
-            field="firstname"
-            value={this.state.firstname}
-            onChange={this.handleInputChanged}
+            value={firstname}
+            onChange={this.handleInputChanged('firstname')}
+            minLength={3}
           />
           <FormElement
             label="Nachname"
-            field="lastname"
-            value={this.state.lastname}
-            onChange={this.handleInputChanged}
+            value={lastname}
+            onChange={this.handleInputChanged('lastname')}
+            minLength={3}
           />
           <FormElement
             label="Passwort"
-            field="password"
-            value={this.state.password}
-            onChange={this.handleInputChanged}
+            value={password}
+            onChange={this.handleInputChanged('password')}
             type="password"
+            minLength={3}
           />
           <div>
-            <button onClick={this.handleSubmit}>Account eröffnen</button>
+            <button onClick={this.handleSubmit} disabled={!maySignup}>
+              Account eröffnen
+            </button>
           </div>
         </form>
         {error && <p>Es ist ein Fehler aufgetreten!</p>}
