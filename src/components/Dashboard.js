@@ -231,7 +231,7 @@ class Dashboard extends Component<Props, State> {
                 value={`${amount}`}
                 onChange={this.handleInputChanged}
                 type="number"
-                min="0"
+                min="0.05"
                 message={!amount && 'Menge angeben'}
               />
               <div>

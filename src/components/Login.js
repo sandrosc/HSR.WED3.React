@@ -56,11 +56,13 @@ class Login extends React.Component<Props, State> {
     const { from } = this.props.location.state || {
       from: { pathname: '/dashboard' }
     };
-    const { redirectToReferrer, error } = this.state;
+    const { redirectToReferrer, error, login, password } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to={from} />;
     }
+
+    const mayLogin = !(login.length < 3 || password.length < 3);
 
     return (
       <div>
@@ -69,18 +71,22 @@ class Login extends React.Component<Props, State> {
           <FormElement
             label="Username"
             field="login"
-            value={this.state.login}
+            value={login}
             onChange={this.handleInputChanged}
+            message={login.length < 3 && 'Minimumlänge 3'}
           />
           <FormElement
             label="Passwort"
             field="password"
-            value={this.state.password}
+            value={password}
             onChange={this.handleInputChanged}
             type="password"
+            message={password.length < 3 && 'Minimumlänge 3'}
           />
           <div>
-            <button onClick={this.handleSubmit}>Log-in</button>
+            <button onClick={this.handleSubmit} disabled={!mayLogin}>
+              Log-in
+            </button>
           </div>
         </form>
         {error && <p>Es ist ein Fehler aufgetreten!</p>}
