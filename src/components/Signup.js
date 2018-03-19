@@ -54,8 +54,9 @@ class Signup extends React.Component<{}, State> {
     if (redirectToReferrer) {
       return <Redirect to="/login" />;
     }
+    const minLength = 3;
     const maySignup = [login, firstname, lastname, password].every(
-      value => value.length >= 3
+      value => value.length >= minLength
     );
     return (
       <div>
@@ -65,26 +66,26 @@ class Signup extends React.Component<{}, State> {
             label="Username"
             value={login}
             onChange={this.handleInputChanged('login')}
-            minLength={3}
+            minLength={minLength}
           />
           <FormElement
             label="Vorname"
             value={firstname}
             onChange={this.handleInputChanged('firstname')}
-            minLength={3}
+            minLength={minLength}
           />
           <FormElement
             label="Nachname"
             value={lastname}
             onChange={this.handleInputChanged('lastname')}
-            minLength={3}
+            minLength={minLength}
           />
           <FormElement
             label="Passwort"
             value={password}
             onChange={this.handleInputChanged('password')}
             type="password"
-            minLength={3}
+            minLength={minLength}
           />
           <div>
             <button onClick={this.handleSubmit} disabled={!maySignup}>
