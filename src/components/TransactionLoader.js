@@ -40,7 +40,8 @@ export default class TransactionLoader extends Component<Props, State> {
     getTransactions(
       this.props.token,
       startDate.toISOString(),
-      endDate.toISOString()
+      endDate.toISOString(),
+      Infinity
     ).then(value =>
       this.setState(state => ({
         ...state,
